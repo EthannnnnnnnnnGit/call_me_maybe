@@ -1,7 +1,7 @@
 PYTHON := python3
 
 run:
-	$(PYTHON) main.py
+	uv run $(PYTHON) main.py
 
 install:
 	pip install pydantic

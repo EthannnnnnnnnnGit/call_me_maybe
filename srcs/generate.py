@@ -16,23 +16,40 @@ def define_prompts(prompts: list[dict[str, str]],
     for func in functions:
         prompts_function += (json.dumps(func, indent=4) + "\n")
     for prompt in prompts:
-        temp = system + prompts_function + prompt["prompt"]
+        temp = (system + "<im_start>user" + prompts_function + prompt["prompt"] + "<im_end>")
         lst_prompts.append(temp)
     return lst_prompts
 
 
-def parse_logits(llm: Small_LLM_Model) -> list:
-    print(llm.get_path_to_tokenizer_file())
+def parse_logits(llm: Small_LLM_Model) -> np.array:
+    temp = llm.get_logits_from_input_ids([1])
+    lst: list = []
+    for i in range(len(temp)):
+        lst.append(llm.decode([i]))
+    return np.array(lst)
 
 
-def get_thinking(llm: Small_LLM_Model, prompt: str, choice) -> None:
-    np.array()
+
+def get_thinking(llm: Small_LLM_Model, prompt: str, vocab: np.array) -> None:
+    tensor = llm.encode(prompt)
+    tensor = [t for t in tensor[0]]
+    result = ""
+    for i in range(3):
+        logits = np.array(llm.get_logits_from_input_ids(tensor))
+        index = logits.argmax()
+        tk = vocab[index]
+        result += tk
+        tensor += [t for t in llm.encode(tk)[0]]
 
 
 def thinker(prompts: list[dict[str, str]],
             functions: list[dict[str, Any]]) -> None:
     llm = Small_LLM_Model()
     lst_prompts = define_prompts(prompts, functions)
-    choice = parse_logits(llm)
+    vocab = parse_logits(llm)
+    print(vocab)
+    print()
     for prompt in lst_prompts:
-        get_thinking(llm, prompt, choice)
+        print(prompt)
+        print()
+        get_thinking(llm, prompt, vocab)
