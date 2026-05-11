@@ -16,10 +16,12 @@ class ConstrainedDecoding(Basemodel):
     state: OutputState = OutputState.PROMPT
     is_last_prompt: bool = True
 
-
-    @staticmethod
-    def determine_mask(logits: list[float]) -> list[float]:
-        pass
+    def determine_mask(self, logits: list[float]) -> list[float]:
+        values = {}
+        for caracter in self.state.value:
+            values[caracter] = None
+        mask = np.full(logits, -np.inf)
+        logits[""] = None
         
 
     def get_masked_logtis(self, logits: list[float]) -> list[float]:
