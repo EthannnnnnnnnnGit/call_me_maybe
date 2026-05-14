@@ -2,6 +2,11 @@ from llm_sdk.llm_sdk import Small_LLM_Model
 from typing import Any
 import json
 import numpy as np
+from enum import Enum
+
+
+class STOP_CONDITION(Enum):
+    
 
 
 def define_prompts(prompts: list[dict[str, str]],
@@ -14,7 +19,7 @@ def define_prompts(prompts: list[dict[str, str]],
     <|im_end|>"""
     for prompt in prompts:
         temp = (system + "<im_start>user" +
-                prompt["prompt"] + "<im_end>" + "<im_start>assistant")
+                prompt["prompt"] + "<im_end>" + "<im_start>assistant {\"name\":")
         lst_prompts.append(temp)
     return lst_prompts
 
@@ -31,7 +36,7 @@ def get_thinking(llm: Small_LLM_Model, prompt: str, vocab: np.array) -> None:
     tensor = llm.encode(prompt)
     tensor = [t for t in tensor[0]]
     result = ""
-    for i in range(10):
+    for i in range(8):
         logits = np.array(llm.get_logits_from_input_ids(tensor))
         index = logits.argmax()
         tk = vocab[index]
