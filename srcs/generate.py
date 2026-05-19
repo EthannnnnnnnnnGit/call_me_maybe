@@ -2,11 +2,22 @@ from llm_sdk.llm_sdk import Small_LLM_Model
 from typing import Any
 import json
 import numpy as np
-from enum import Enum
 
 
-class STOP_CONDITION(Enum):
-    
+temp = Small_LLM_Model()
+STOP_CONDITION = {"\"", "<|im_end|>", "\n", ",", ""}
+
+
+def constrained_decoding(llm: Small_LLM_Model, funcs: list[dict]) -> np.array:
+    logits = np.array(llm.get_logits_from_input_ids([0, 0, 1]))
+    mask = np.full_like(logits, -np.inf)
+    authorized = set()
+    for func in funcs:
+        authorized.update([i for i in llm.encode(func["name"])[0]])
+    authorized.add(llm.encode("\"")[0])
+    for tensor in authorized:
+        mask[tensor] = 0
+    return mask
 
 
 def define_prompts(prompts: list[dict[str, str]],
@@ -24,31 +35,59 @@ def define_prompts(prompts: list[dict[str, str]],
     return lst_prompts
 
 
-def parse_logits(llm: Small_LLM_Model) -> np.array:
-    temp = llm.get_logits_from_input_ids([1])
-    lst: list = []
-    for i in range(len(temp)):
-        lst.append(llm.decode([i]))
-    return np.array(lst)
-
-
-def get_thinking(llm: Small_LLM_Model, prompt: str, vocab: np.array) -> None:
-    tensor = llm.encode(prompt)
+def get_thinking(llm: Small_LLM_Model, prompt: str, mask) -> str:
+    tensor = llm.encode(prompt + "\"")
     tensor = [t for t in tensor[0]]
-    result = ""
-    for i in range(8):
+    result = "\""
+    count = 0
+    tk = None
+    while count < 8 and tk not in STOP_CONDITION:
         logits = np.array(llm.get_logits_from_input_ids(tensor))
+        logits += mask
         index = logits.argmax()
-        tk = vocab[index]
+        tk = llm.decode(index)
         result += tk
         tensor += [t for t in llm.encode(tk)[0]]
-    print(result)
+        count += 1
+    return result
+
+
+def get_func(llm: Small_LLM_Model,
+             functions: list[dict]) -> dict[str, np.array]:
+    dict_func = {}
+    for func in functions:
+        dict_func[func["name"]] = [i for i in llm.encode(json.dumps(func))[0]]
+    return dict_func
+
+
+def get_params(llm: Small_LLM_Model, name: str,
+               dict_func: dict[str, np.array]) -> None:
+    try:
+        func = dict_func[name]
+    except KeyError:
+        print("Wrong function name")
+    tensor = llm.encode(func + "\"")
+    tensor = [t for t in tensor[0]]
+    result = "\""
+    count = 0
+    tk = None
+    while count < 8 and tk not in STOP_CONDITION:
+        logits = np.array(llm.get_logits_from_input_ids(tensor))
+        logits += mask
+        index = logits.argmax()
+        tk = llm.decode(index)
+        result += tk
+        tensor += [t for t in llm.encode(tk)[0]]
+        count += 1
+    return result
 
 
 def thinker(prompts: list[dict[str, str]],
             functions: list[dict[str, Any]]) -> None:
     llm = Small_LLM_Model()
+    mask = constrained_decoding(llm, functions)
     lst_prompts = define_prompts(prompts, functions)
-    vocab = parse_logits(llm)
+    dict_func = get_func()
     for prompt in lst_prompts:
-        get_thinking(llm, prompt, vocab)
+        name = get_thinking(llm, prompt, mask)
+        get_params(llm, name.strip("\""), dict_func)
