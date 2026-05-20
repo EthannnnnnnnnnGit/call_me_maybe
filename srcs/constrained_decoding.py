@@ -1,29 +1,23 @@
-from pydantic import Basemodel
-from enum import Enum
-from typing import Any
 import numpy as np
 
 
-class OutputState(Enum):
-    PROMPT = "{\"prompt\":"
-    NAME = "\"name\":"
-    PARAMETERS = "\"parameters\":"
-    END = "}"
-    NEXT = ","
+class NumberDecoding:
+    def reset_settings(self) -> None:
+        self.prev = None
+        self.decimal = False
 
-
-class ConstrainedDecoding(Basemodel):
-    state: OutputState = OutputState.PROMPT
-    is_last_prompt: bool = True
-
-    def determine_mask(self, logits: list[float | Any]) -> list[float | Any]:
-        values = {}
-        for caracter in self.state.value:
-            values[caracter] = None
-        mask = np.full(logits, -np.inf)
-        logits[""] = None
-        return mask
-
-    def get_masked_logtis(self, logits: list[float]) -> list[float]:
-        mask = self.determine_mask(logits)
+    def get_mask(self) -> np.array:
+        number = [f"{i}" for i in range(10)]
+        match self.prev:
+            case None:
+                mask = ["-"] + number
+            case ".":
+                mask = number
+                self.decimal = True
+            case _:
+                if self.decimal:
+                    mask = number
+                else:
+                    mask = number + ["."]
+        mask = None
         return mask

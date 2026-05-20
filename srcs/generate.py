@@ -41,14 +41,19 @@ def get_thinking(llm: Small_LLM_Model, prompt: str, mask) -> str:
     result = "\""
     count = 0
     tk = None
-    while count < 8 and tk not in STOP_CONDITION:
+    print("Name : ", end="")
+    while count < 8:
         logits = np.array(llm.get_logits_from_input_ids(tensor))
         logits += mask
         index = logits.argmax()
         tk = llm.decode(index)
+        if tk in STOP_CONDITION:
+            break
+        print(tk, end="")
         result += tk
         tensor += [t for t in llm.encode(tk)[0]]
         count += 1
+    print()
     return result
 
 
@@ -66,16 +71,19 @@ def get_params(llm: Small_LLM_Model, name: str,
         func = dict_func[name]
     except KeyError:
         print("Wrong function name")
-    tensor = llm.encode(func + "\"")
-    tensor = [t for t in tensor[0]]
+    tensor = llm.encode("\"parameters\": \"")
+    tensor = func + [t for t in tensor[0]]
     result = "\""
     count = 0
     tk = None
-    while count < 8 and tk not in STOP_CONDITION:
+    while count < 8 and tk:
+        mask = get_mask()
         logits = np.array(llm.get_logits_from_input_ids(tensor))
         logits += mask
         index = logits.argmax()
         tk = llm.decode(index)
+        if tk in STOP_CONDITION:
+            break
         result += tk
         tensor += [t for t in llm.encode(tk)[0]]
         count += 1
@@ -87,7 +95,7 @@ def thinker(prompts: list[dict[str, str]],
     llm = Small_LLM_Model()
     mask = constrained_decoding(llm, functions)
     lst_prompts = define_prompts(prompts, functions)
-    dict_func = get_func()
+    dict_func = get_func(llm, functions)
     for prompt in lst_prompts:
         name = get_thinking(llm, prompt, mask)
-        get_params(llm, name.strip("\""), dict_func)
+        # get_params(llm, name.strip("\""), dict_func)
