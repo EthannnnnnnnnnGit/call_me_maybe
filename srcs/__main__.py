@@ -1,6 +1,6 @@
-import srcs.get_data as parsing
+import srcs.parsing.get_data as parsing
 import srcs.generate as generator
-from srcs.parsing import get_args
+from srcs.parsing.parsing import get_args
 # from typing import Any
 
 
@@ -14,8 +14,8 @@ def main() -> None:
     except Exception as e:
         print(e)
         return
-    generator.thinker(prompts, functions)
-
+    ia = generator.CallMeMaybe(prompts, functions)
+    ia.thinker()
 
 if __name__ == "__main__":
     main()
