@@ -31,5 +31,17 @@
   },
   {
     "prompt": "Substitute the word 'cat' with 'dog' in 'The cat sat on the mat with another cat'"
+  },
+  {
+    "prompt": "What is the sum of -52 and 20"
+  },
+  {
+    "prompt": "The square root of 2e10"
+  },
+  {
+    "prompt": "Say hello to August"
+  },
+  {
+    "prompt": "Replace in the phrase 'I think therefor I am' every 'e' by 'ye'"
   }
 ]

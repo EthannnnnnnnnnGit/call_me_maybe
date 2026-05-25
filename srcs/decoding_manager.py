@@ -26,8 +26,11 @@ class DecodingManager:
         self.decoder = None
         self.llm = llm
         self.logits = llm.get_logits_from_input_ids([0])
+        self.ended = False
+        self.stop = {"<|im_end|>", "\n", ",", "", "}", ":"}
 
     def choose_decoder(self, type: list[str]) -> None:
+        self.ended = False
         try:
             self.decoder = self.pipelines[type[0]]
             if type[0] == "array":
@@ -51,3 +54,10 @@ class DecodingManager:
             index = self.llm.encode(val)[0]
             mask_logits[index] = 0
         return mask_logits
+
+    def check_token(self, token: str) -> str:
+        for i in range(len(token)):
+            if token[i] in self.stop:
+                self.ended = True
+                return token[:i]
+        return token
