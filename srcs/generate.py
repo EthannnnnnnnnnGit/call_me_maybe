@@ -15,7 +15,7 @@ class CallMeMaybe:
         self.llm = Small_LLM_Model()
         self.prompts = prompts
         self.functions = functions
-        self.decoder = DecodingManager()
+        self.decoder = DecodingManager(self.llm)
 
     def types_getter(self, func: dict) -> list[list[str]]:
         regex_validator = r'^\w+$|^\w+\[\w+\]$|^\w+\[\w+,\s*\w+\]$'
@@ -64,20 +64,23 @@ class CallMeMaybe:
         lst_params = []
         tensor = self.param_tensor_getter(defined_func, prompt)
         mask = None
-        for arg in defined_func["parameters"].keys():
+        for types, arg in zip(lst_types, defined_func["parameters"].keys()):
             tensor += self.llm.encode(f"{arg}: ")[0].tolist()
+            self.decoder.choose_decoder(types)
             count = 0
             result = ""
             while count < 8:
+                mask = self.decoder.define_mask()
                 logits = np.array(self.llm.get_logits_from_input_ids(tensor))
-                # logits += mask
+                logits += mask
                 index = logits.argmax()
                 tk = self.llm.decode(index)
-                if tk in STOP_CONDITION:
+                if tk in {"<|im_end|>", "\n", ",", ""}:
                     break
                 result += tk
                 tensor += [t for t in self.llm.encode(tk)[0]]
                 count += 1
+                self.decoder.decoder.prev = tk
             lst_params.append(result)
         for tmp in lst_params: print(tmp)
         print()
@@ -90,7 +93,6 @@ class CallMeMaybe:
         return None
 
     def thinker(self) -> None:
-        mask = DecodingManager()
         lst_results: list = []
         lst_prompts = define_name_prompt(self.prompts, self.functions)
         func_mask = get_name_mask(self.llm, self.functions)

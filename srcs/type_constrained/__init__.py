@@ -1,7 +1,6 @@
 from .array import ArrayDecoding
 from .hexa import HexDecoding
 from .integer import IntegerDecoding
-from .masking import Masking
 from .number import NumberDecoding
 from .object import ObjectDecoding
 from .special import SpecialDecoding
