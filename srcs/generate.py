@@ -35,7 +35,7 @@ class CallMeMaybe:
         count = 0
         tk = None
         print("Name : ", end="")
-        while count < 8:
+        while count < 20:
             logits = np.array(self.llm.get_logits_from_input_ids(tensor))
             logits += mask
             index = logits.argmax()
@@ -51,8 +51,8 @@ class CallMeMaybe:
 
     def param_tensor_getter(self, defined_func, question) -> np.array:
         system = f"<im_start>system\n{defined_func}\n<im_end>"
-        user = f"\n<im_start>user\n {question}\n<im_end>\n"
-        qwen = "{\"parameters\": {"
+        user = f"\n<im_start>user\n {question}\n handle negative numbers<im_end>\n"
+        qwen = "<im_start>assistant\n{\"parameters\": {"
         prompt = system + user + qwen
         tensor = self.llm.encode(prompt)[0].tolist()
         return tensor
@@ -64,25 +64,31 @@ class CallMeMaybe:
         tensor = self.param_tensor_getter(defined_func, prompt)
         mask = None
         print("Prompt:", prompt)
+        minus = self.llm.encode("-")
+        comma = self.llm.encode(",")
         for types, arg in zip(lst_types, defined_func["parameters"].keys()):
             tensor += self.llm.encode(f"\"{arg}\": ")[0].tolist()
             self.decoder.choose_decoder(types)
             count = 0
             result = ""
+            print(f"{arg}: ", end="")
             while count < 24:
                 mask = self.decoder.define_mask()
                 logits = np.array(self.llm.get_logits_from_input_ids(tensor))
                 logits += mask
                 index = logits.argmax()
                 tk = self.decoder.check_token(self.llm.decode(index))
+                if count == 0:
+                    print(logits[comma], logits[minus])
                 result += tk
-                tensor += [t for t in self.llm.encode(tk)[0]]
+                tensor += (self.llm.encode(tk)[0].tolist())
+                # print(tk, end="", flush=True)
                 if self.decoder.ended:
                     tensor += self.llm.encode(",")[0].tolist()
                     break
                 count += 1
                 self.decoder.decoder.prev = tk
-            print(result)
+            print(result.strip())
             lst_params.append(result)
         print()
         return result

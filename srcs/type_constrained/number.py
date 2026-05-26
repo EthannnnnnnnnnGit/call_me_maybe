@@ -11,7 +11,7 @@ class NumberDecoding:
         numbers = [f"{i}" for i in range(10)]
         match self.prev:
             case None:
-                mask = ["-"] + numbers
+                mask = ["-"] + [","]
             case "e" | "E":
                 self.exponent = True
                 self.frac = False

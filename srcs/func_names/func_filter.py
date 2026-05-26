@@ -6,8 +6,8 @@ def define_name_prompt(prompts: list[dict[str, str]],
     lst_prompts: list[str] = []
     prompts_function: str = ""
     for func in functions:
-        prompts_function += "\n{\"name\":" + func["name"]
-        prompts_function += ",\"description\":" + func["description"] + "}"
+        prompts_function += "\n{\"name\":" + func["name"] + "}"
+        # prompts_function += ",\"description\":" + func["description"] + "}"
     system = f"""<|im_start|>system{prompts_function}\n<|im_end|>\n"""
     for prompt in prompts:
         temp = (system + "<im_start>user\n" +
