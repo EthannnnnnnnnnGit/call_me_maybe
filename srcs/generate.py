@@ -3,7 +3,7 @@ import numpy as np
 from srcs.decoding_manager import DecodingManager
 from srcs.func_names.func_filter import define_name_prompt
 from srcs.func_names.func_name_decoding import get_name_mask
-from srcs.build_json import build_json
+from srcs.make_json import build_json
 import re
 
 
@@ -51,7 +51,7 @@ class CallMeMaybe:
 
     def param_tensor_getter(self, defined_func, question) -> np.array:
         system = f"<im_start>system\n{defined_func}\n<im_end>"
-        user = f"\n<im_start>user\n {question}\n handle negative numbers<im_end>\n"
+        user = f"\n<im_start>user\n {question}\n <im_end>\n"
         qwen = "<im_start>assistant\n{\"parameters\": {"
         prompt = system + user + qwen
         tensor = self.llm.encode(prompt)[0].tolist()
@@ -63,9 +63,7 @@ class CallMeMaybe:
         lst_params = []
         tensor = self.param_tensor_getter(defined_func, prompt)
         mask = None
-        print("Prompt:", prompt)
-        minus = self.llm.encode("-")
-        comma = self.llm.encode(",")
+        print("Prompt:", prompt["prompt"])
         for types, arg in zip(lst_types, defined_func["parameters"].keys()):
             tensor += self.llm.encode(f"\"{arg}\": ")[0].tolist()
             self.decoder.choose_decoder(types)
@@ -78,18 +76,16 @@ class CallMeMaybe:
                 logits += mask
                 index = logits.argmax()
                 tk = self.decoder.check_token(self.llm.decode(index))
-                if count == 0:
-                    print(logits[comma], logits[minus])
                 result += tk
                 tensor += (self.llm.encode(tk)[0].tolist())
-                # print(tk, end="", flush=True)
+                print(tk, end="", flush=True)
                 if self.decoder.ended:
                     tensor += self.llm.encode(",")[0].tolist()
                     break
                 count += 1
                 self.decoder.decoder.prev = tk
-            print(result.strip())
             lst_params.append(result)
+            print()
         print()
         return result
 
@@ -110,5 +106,6 @@ class CallMeMaybe:
                 print("The name of the function is not in the given one.")
                 continue
             params = self.get_func_params(name, self.prompts[i], defined_func)
-            lst_results = build_json(name, params)
+            lst_results.append(build_json(self.prompts[i]["prompt"],
+                                          name, params))
         return lst_results

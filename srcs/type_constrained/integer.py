@@ -1,11 +1,8 @@
-import numpy as np
-
-
 class IntegerDecoding:
     def reset_settings(self) -> None:
         self.start = True
 
-    def get_mask(self) -> np.array:
+    def get_mask(self) -> list[str]:
         number = [f"{i}" for i in range(10)]
         if self.start:
             mask = ["-"] + number

@@ -3,5 +3,5 @@ class ObjectDecoding:
         self.finished = False
         self.start = True
 
-    def get_mask(self) -> None:
+    def get_mask(self) -> list[str]:
         pass

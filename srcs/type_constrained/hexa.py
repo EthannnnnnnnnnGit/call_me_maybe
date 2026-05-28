@@ -1,6 +1,3 @@
-import numpy as np
-
-
 class HexDecoding:
     def reset_settings(self) -> None:
         self.bases = [
@@ -9,7 +6,7 @@ class HexDecoding:
             [val for val in "0123456789"]
         ]
 
-    def get_mask(self) -> np.array:
+    def get_mask(self) -> list[str]:
         mask = []
         for base in self.bases:
             mask += base

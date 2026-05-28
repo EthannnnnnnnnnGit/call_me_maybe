@@ -1,6 +1,7 @@
 import srcs.parsing.get_data as parsing
 import srcs.generate as generator
 from srcs.parsing.parsing import get_args
+from srcs.make_json import make_output_file
 # from typing import Any
 
 
@@ -15,7 +16,9 @@ def main() -> None:
         print(e)
         return
     ia = generator.CallMeMaybe(prompts, functions)
-    ia.thinker()
+    lst_json = ia.thinker()
+    make_output_file(lst_json, args.output)
+
 
 if __name__ == "__main__":
     main()

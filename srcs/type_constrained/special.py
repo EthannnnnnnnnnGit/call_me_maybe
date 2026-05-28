@@ -1,5 +1,4 @@
 from itertools import zip_longest
-import numpy as np
 
 
 class SpecialDecoding:
@@ -11,11 +10,11 @@ class SpecialDecoding:
         }
         self.type = None
 
-    def reset_settings(self, type) -> np.array:
+    def reset_settings(self, type) -> None:
         self.type = type
         self.index = 0
 
-    def get_mask(self) -> np.array:
+    def get_mask(self) -> list[str]:
         if self.index < len(self.states[self.type]):
             mask = self.states[self.type][self.index]
         else:

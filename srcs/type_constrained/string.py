@@ -1,6 +1,3 @@
-import numpy as np
-
-
 class StringDecoding:
     def reset_settings(self) -> None:
         self.start = True

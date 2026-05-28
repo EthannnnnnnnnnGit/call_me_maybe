@@ -1,21 +1,18 @@
-import numpy as np
-
-
 class NumberDecoding:
     def reset_settings(self) -> None:
         self.prev: None | str = None
         self.frac = False
         self.exponent = False
 
-    def get_mask(self) -> np.array:
+    def get_mask(self) -> list[str]:
         numbers = [f"{i}" for i in range(10)]
         match self.prev:
             case None:
-                mask = ["-"] + [","]
+                mask = ["-"] + numbers
             case "e" | "E":
                 self.exponent = True
                 self.frac = False
-                mask = numbers + ["-", "+"]
+                mask = numbers
             case "-" | "+":
                 mask = numbers
             case ".":
