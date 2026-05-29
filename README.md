@@ -10,7 +10,7 @@
 
 
 ## Description
-Impressionnant, *certifié Alexandre the Great* 
+Impressionnant, *certifié Alexandre the Great*
 
 
 ## Instructions
