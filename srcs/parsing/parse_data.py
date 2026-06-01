@@ -12,20 +12,13 @@ def raise_on_dupplicate_keys(json_values):
 
 
 def get_json(filename: str) -> list[dict[str, Any]]:
-    try:
-        with open(filename, "r") as f:
-            json_data = json.load(f,
-                                  object_pairs_hook=raise_on_dupplicate_keys)
-            if not isinstance(list):
-                raise TypeError("The function definition file should be "
-                                "a list of dict")
-            for data in json_data:
-                if not isinstance(dict):
-                    raise TypeError("The function definition file should be a "
-                                    "list of dict")
-    except TypeError as e:
-        print(e)
-    except json.JSONDecodeError as e:
-        print(e)
-    except OSError as e:
-        print(e)
+    with open(filename, "r") as f:
+        json_data = json.load(f, object_pairs_hook=raise_on_dupplicate_keys)
+        if not isinstance(json_data, list):
+            raise TypeError("The function definition file should be "
+                            "a list of dict")
+        for data in json_data:
+            if not isinstance(data, dict):
+                raise TypeError("The function definition file should be a "
+                                "list of dict")
+    return json_data

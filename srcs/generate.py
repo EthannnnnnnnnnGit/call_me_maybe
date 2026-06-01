@@ -5,6 +5,7 @@ from srcs.func_names.func_filter import define_name_prompt
 from srcs.func_names.func_name_decoding import get_name_mask
 from srcs.make_json import build_json
 import re
+import rich
 
 
 STOP_CONDITION = {"\"", "<|im_end|>", "\n", ",", ""}
@@ -34,7 +35,7 @@ class CallMeMaybe:
         result = ""
         count = 0
         tk = None
-        print("Name : ", end="")
+        rich.print("Name : ", end="")
         while count < 20:
             logits = np.array(self.llm.get_logits_from_input_ids(tensor))
             logits += mask
@@ -42,7 +43,7 @@ class CallMeMaybe:
             tk = self.llm.decode(index)
             if tk in STOP_CONDITION:
                 break
-            print(tk, end="")
+            rich.print(tk, end="", flush=True)
             result += tk
             tensor += self.llm.encode(tk)[0]
             count += 1
@@ -60,16 +61,15 @@ class CallMeMaybe:
     def get_func_params(self, name: str, prompt: str,
                         defined_func: dict[str, np.array]) -> list[str]:
         lst_types = self.types_getter(defined_func)
-        lst_params = []
+        params = {}
         tensor = self.param_tensor_getter(defined_func, prompt)
         mask = None
-        print("Prompt:", prompt["prompt"])
         for types, arg in zip(lst_types, defined_func["parameters"].keys()):
             tensor += self.llm.encode(f"\"{arg}\": ")[0].tolist()
             self.decoder.choose_decoder(types)
             count = 0
             result = ""
-            print(f"{arg}: ", end="")
+            rich.print(f"{arg}: ", end="")
             while count < 24:
                 mask = self.decoder.define_mask()
                 logits = np.array(self.llm.get_logits_from_input_ids(tensor))
@@ -78,16 +78,16 @@ class CallMeMaybe:
                 tk = self.decoder.check_token(self.llm.decode(index))
                 result += tk
                 tensor += (self.llm.encode(tk)[0].tolist())
-                print(tk, end="", flush=True)
+                rich.print(tk, end="", flush=True)
                 if self.decoder.ended:
                     tensor += self.llm.encode(",")[0].tolist()
                     break
                 count += 1
                 self.decoder.decoder.prev = tk
-            lst_params.append(result)
+            params[arg] = result
             print()
         print()
-        return result
+        return params
 
     def function_getter(self, name: str, functions: list[dict]) -> dict | None:
         for func in functions:
@@ -95,11 +95,12 @@ class CallMeMaybe:
                 return func
         return None
 
-    def thinker(self) -> None:
+    def thinker(self) -> list[dict]:
         lst_results: list = []
         lst_prompts = define_name_prompt(self.prompts, self.functions)
         func_mask = get_name_mask(self.llm, self.functions)
         for i, prompt in enumerate(lst_prompts):
+            rich.print("Prompt:", self.prompts[i]["prompt"])
             name = self.get_func_name(prompt, func_mask)
             defined_func = self.function_getter(name, self.functions)
             if not defined_func:

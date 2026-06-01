@@ -1,7 +1,7 @@
 import argparse
 
 
-def get_args() -> argparse.Namespace:
+def get_flags() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--functions_definition', type=str,
