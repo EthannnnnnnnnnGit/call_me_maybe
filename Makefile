@@ -31,5 +31,6 @@ lint-strict:
 clean:
 	rm -rf */*__pycache__ */*/*__pycache__
 	rm -rf .mypy_cache
+	rm -rf data/output
 
 .PHONY: venv
