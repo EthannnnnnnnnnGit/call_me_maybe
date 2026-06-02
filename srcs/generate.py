@@ -62,7 +62,7 @@ class CallMeMaybe:
 
     def param_tensor_getter(self, defined_func, question) -> np.array:
         system = f"<im_start>system\n{defined_func}\n<im_end>"
-        user = f"\n<im_start>user\n {question}\n <im_end>\n"
+        user = f"\n<im_start>user\n{question}\n <im_end>\n"
         qwen = "<im_start>assistant\n{\"parameters\": {"
         prompt = system + user + qwen
         tensor = self.llm.encode(prompt)[0].tolist()
@@ -72,7 +72,7 @@ class CallMeMaybe:
                         defined_func: dict[str, np.array]) -> list[str]:
         lst_types = self.types_getter(defined_func)
         params = {}
-        tensor = self.param_tensor_getter(defined_func, prompt)
+        tensor = self.param_tensor_getter(defined_func, prompt["prompt"])
         mask = None
         for types, arg in zip(lst_types, defined_func["parameters"].keys()):
             tensor += self.llm.encode(f"\"{arg}\": ")[0].tolist()
