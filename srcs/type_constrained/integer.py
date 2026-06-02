@@ -8,5 +8,5 @@ class IntegerDecoding:
             mask = ["-"] + number
             self.start = False
         else:
-            mask = number
+            mask = number + [","]
         return mask

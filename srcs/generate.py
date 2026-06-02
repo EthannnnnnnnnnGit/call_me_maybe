@@ -35,6 +35,8 @@ class CallMeMaybe:
             case "list":
                 return eval(result)
             case "number" | "integer":
+                if "." in result:
+                    return float(result)
                 return int(result)
             case _:
                 return result
