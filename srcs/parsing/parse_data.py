@@ -17,6 +17,8 @@ def get_json(filename: str) -> list[dict[str, Any]]:
         if not isinstance(json_data, list):
             raise TypeError("The function definition file should be "
                             "a list of dict")
+        if len(json_data) == 0:
+            raise ValueError("The list should have at least one value")
         for data in json_data:
             if not isinstance(data, dict):
                 raise TypeError("The function definition file should be a "

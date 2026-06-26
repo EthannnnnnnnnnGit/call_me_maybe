@@ -4,7 +4,7 @@
     "description": "Add two numbers together and return their sum.",
     "parameters": {
       "a": {
-        "type": "integer"
+        "type": "number"
       },
       "b": {
         "type": "number"
@@ -27,30 +27,6 @@
     }
   },
   {
-    "name": "fn_reverse_string",
-    "description": "Reverse a string and return the reversed result.",
-    "parameters": {
-      "s": {
-        "type": "string"
-      }
-    },
-    "returns": {
-      "type": "string"
-    }
-  },
-  {
-    "name": "fn_get_square_root",
-    "description": "Calculate the square root of a number.",
-    "parameters": {
-      "a": {
-        "type": "number"
-      }
-    },
-    "returns": {
-      "type": "number"
-    }
-  },
-  {
     "name": "fn_substitute_string_with_regex",
     "description": "Replace all occurrences matching a regex pattern in a string.",
     "parameters": {
@@ -66,6 +42,24 @@
     },
     "returns": {
       "type": "string"
+    }
+  },
+  {
+    "name": "fn_configure_system",
+    "description": "Modify system parameters including thresholds and active states.",
+    "parameters": {
+      "threshold": {
+        "type": "number"
+      },
+      "is_active": {
+        "type": "boolean"
+      },
+      "mode": {
+        "type": "string"
+      }
+    },
+    "returns": {
+      "type": "boolean"
     }
   }
 ]

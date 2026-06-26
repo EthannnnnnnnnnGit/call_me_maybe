@@ -6,8 +6,6 @@ from srcs.type_constrained import (
     HexDecoding,
     NumberDecoding,
     SpecialDecoding,
-    ObjectDecoding,
-    ArrayDecoding
 )
 
 
@@ -18,10 +16,8 @@ class DecodingManager:
             "integer": IntegerDecoding(),
             "hexadecimal": HexDecoding(),
             "number": NumberDecoding(),
-            "bool": SpecialDecoding(),
-            "null": SpecialDecoding(),
-            "object": ObjectDecoding(),
-            "array": ArrayDecoding()
+            "bool": SpecialDecoding("bool"),
+            "null": SpecialDecoding("null"),
         }
         self.decoder = None
         self.llm = llm
@@ -53,9 +49,9 @@ class DecodingManager:
         for val in mask:
             index = self.llm.encode(val)[0]
             mask_logits[index] = 0
-        if ((isinstance(self.decoder, NumberDecoding) or
-             isinstance(self.decoder, IntegerDecoding)) and "-" in mask):
-            mask_logits[self.llm.encode("-")] = 22
+        # if ((isinstance(self.decoder, NumberDecoding) or
+        #      isinstance(self.decoder, IntegerDecoding)) and "-" in mask):
+        #     mask_logits[self.llm.encode("-")] = 22
         return mask_logits
 
     def check_token(self, token: str) -> str:

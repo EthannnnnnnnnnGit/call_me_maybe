@@ -11,6 +11,8 @@ class FunctionValidator(BaseModel):
 
     @model_validator(mode="after")
     def naming_check(self) -> Self:
+        authorized = {"string", "integer", "hexadecimal",
+                      "number", "boolean", "null", "array"}
         if self.returns.__len__() != 1:
             raise ValueError("Returns dict should have precisely one value.")
         if list(self.returns.keys())[0] != "type":
@@ -25,6 +27,9 @@ class FunctionValidator(BaseModel):
             if list(value.keys())[0] != "type":
                 raise ValueError("The key of the parameters dict "
                                  "should be \"type\"")
+            if list(value.values())[0] not in authorized:
+                raise ValueError("Type not supported,"
+                                 f"types should be one in {authorized}")
         return self
 
 

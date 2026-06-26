@@ -15,8 +15,3 @@ def define_name_prompt(prompts: list[dict[str, str]],
                 "\n{\"name\":")
         lst_prompts.append(temp)
     return lst_prompts
-
-
-# define_name_prompt([{"prompt": "YO"}, {"prompt": "YO"}],
-#                    [{"name": "jsp", "description": "jsp"},
-#                     {"name": "jsp", "description": "jsp"}])

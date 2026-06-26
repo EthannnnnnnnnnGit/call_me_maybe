@@ -1,4 +1,7 @@
 class IntegerDecoding:
+    def __init__(self):
+        self.stop = {",", "}", ""}
+
     def reset_settings(self) -> None:
         self.start = True
 

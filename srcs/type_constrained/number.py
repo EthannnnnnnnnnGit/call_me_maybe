@@ -1,4 +1,7 @@
 class NumberDecoding:
+    def __init__(self):
+        self.stop = {",", "}", ""}
+
     def reset_settings(self) -> None:
         self.prev: None | str = None
         self.frac = False

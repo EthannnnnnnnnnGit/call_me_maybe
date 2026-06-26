@@ -1,4 +1,7 @@
 class HexDecoding:
+    def __init__(self):
+        self.stop = {",", "}", ""}
+
     def reset_settings(self) -> None:
         self.bases = [
             [val for val in "abcdef"],
@@ -7,7 +10,7 @@ class HexDecoding:
         ]
 
     def get_mask(self) -> list[str]:
-        mask = []
+        mask = [","]
         for base in self.bases:
             mask += base
         return mask

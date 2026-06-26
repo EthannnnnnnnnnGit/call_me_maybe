@@ -1,35 +1,38 @@
 [
   {
-    "prompt": "What is the sum of 2 and 3?"
+    "prompt": "What is the sum of -0.0000502 and -12e-4?"
   },
   {
-    "prompt": "What is the sum of 265 and 345?"
+    "prompt": "Add 2.5e+12 to 0"
   },
   {
-    "prompt": "Greet shrek"
+    "prompt": "What is the sum of -0 and 0?"
   },
   {
-    "prompt": "Greet john"
+    "prompt": "What is the sum of 999999999999999999 and -1?"
   },
   {
-    "prompt": "Reverse the string 'hello'"
+    "prompt": "Greet \"\""
   },
   {
-    "prompt": "Reverse the string 'world'"
+    "prompt": "Greet \ud83d\udc4b\ud83e\udd16 (Emoji Bot!)"
   },
   {
-    "prompt": "What is the square root of 16?"
+    "prompt": "In the sentence 'The price is $4.99 and $19.99', replace the regex '\\$[0-9]+\\.[0-9]{2}' with the word 'REDACTED'"
   },
   {
-    "prompt": "Calculate the square root of 144"
+    "prompt": "Substitute any newline character '\\n' or tab '\\t' with a single space ' ' in the block text."
   },
   {
-    "prompt": "Replace all numbers in \"Hello 34 I'm 233 years old\" with NUMBERS"
+    "prompt": "Set the system threshold to -12.47, turn off active status, and switch mode to 'debug'"
   },
   {
-    "prompt": "Replace all vowels in 'Programming is fun' with asterisks"
+    "prompt": "Turn on active mode, set threshold to 0, mode is 'production'"
   },
   {
-    "prompt": "Substitute the word 'cat' with 'dog' in 'The cat sat on the mat with another cat'"
+    "prompt": "What is the capital of France?"
+  },
+  {
+    "prompt": "Can you explain how a neural network works?"
   }
 ]
