@@ -1,38 +1,32 @@
 [
   {
-    "prompt": "What is the sum of -0.0000502 and -12e-4?"
+    "prompt": "Update the display settings for 'Main Living Room TV' with a brightness level of 85, gamma correction value of 2.22, supporting the resolutions ['1080p', '4K', '8K'], turn on HDR mode, and keep the calibration profile as null."
   },
   {
-    "prompt": "Add 2.5e+12 to 0"
+    "prompt": "Set display settings: device name is 'Studio Monitor B', brightness is 0, gamma multiplier is 1.0, support list is ['720p', '1080p'], disable HDR options, and calibration profile must be null."
   },
   {
-    "prompt": "What is the sum of -0 and 0?"
+    "prompt": "Commit a database transaction to the table called 'user_session_logs_backup' at row index 1500, using a weight coefficient of 0.875, associated user IDs [101, 204, 309, 412], marked encrypted as true, and override key set to null."
   },
   {
-    "prompt": "What is the sum of 999999999999999999 and -1?"
+    "prompt": "Log database commit for table 'inventory_items_v2' at row 94812, coefficient 3.14159, with associated user IDs [0], encryption flag is false, override key is null."
   },
   {
-    "prompt": "Greet \"\""
+    "prompt": "Register an IoT node at location 'Warehouse Zone-C, Row 14', with a ping interval of 60 seconds, recent voltage readings of [3.62, 3.58, 3.60], MAC hex code '00:1A:2B:3C:4D:5E', set mesh mode to true, and firmware notes to null."
   },
   {
-    "prompt": "Greet \ud83d\udc4b\ud83e\udd16 (Emoji Bot!)"
+    "prompt": "Provision network node: tag is 'Outdoor Weather Station #1', ping interval is 3600, initial voltage array is [4.12, 4.05], MAC code 'FF:FF:FF:00:11:22', active mesh status is false, patch notes must be null."
   },
   {
-    "prompt": "In the sentence 'The price is $4.99 and $19.99', replace the regex '\\$[0-9]+\\.[0-9]{2}' with the word 'REDACTED'"
+    "prompt": "Generate an invoice for our client 'Acme Corporation, LLC.', with item counts [5, 12, 1, 22], tax multiplier 1.15, ledger code '0xABC123', enable auto charge tracking, and leave discount coupon as null."
   },
   {
-    "prompt": "Substitute any newline character '\\n' or tab '\\t' with a single space ' ' in the block text."
+    "prompt": "Create invoice details for 'Johnathan Doe (Consulting)' for an item counts array of [2, 0, 10], cycle value 7 days, tax rate 1.0, ledger reference '#99FF33', auto charge is false, coupon value is null."
   },
   {
-    "prompt": "Set the system threshold to -12.47, turn off active status, and switch mode to 'debug'"
+    "prompt": "Configure the audio channel labeled 'Primary Microphone Input' to a buffer size of 512 samples, frequency of 44.1, bus hex indicator '0x02', turn low latency mode on, and alternative target is null."
   },
   {
-    "prompt": "Turn on active mode, set threshold to 0, mode is 'production'"
-  },
-  {
-    "prompt": "What is the capital of France?"
-  },
-  {
-    "prompt": "Can you explain how a neural network works?"
+    "prompt": "Set audio matrix parameters: channel name is 'Auxiliary Monitor Mix Out', buffer size is 1024, frequency is 96.0, bus address '0x1F', low latency mode is false, routing target is null."
   }
 ]

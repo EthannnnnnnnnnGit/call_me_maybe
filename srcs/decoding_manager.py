@@ -6,6 +6,7 @@ from srcs.type_constrained import (
     HexDecoding,
     NumberDecoding,
     SpecialDecoding,
+    ArrayDecoding
 )
 
 
@@ -14,30 +15,25 @@ class DecodingManager:
         self.pipelines = {
             "string": StringDecoding(),
             "integer": IntegerDecoding(),
-            "hexadecimal": HexDecoding(),
+            "hex": HexDecoding(),
             "number": NumberDecoding(),
-            "bool": SpecialDecoding("bool"),
+            "boolean": SpecialDecoding("bool"),
             "null": SpecialDecoding("null"),
+            "array": ArrayDecoding()
         }
         self.decoder = None
         self.llm = llm
         self.logits = llm.get_logits_from_input_ids([0])
         self.ended = False
-        self.stop = {"<|im_end|>", "\n", ",", "", "}", ":"}
 
     def choose_decoder(self, type: list[str]) -> None:
         self.ended = False
         try:
             self.decoder = self.pipelines[type[0]]
-            if type[0] == "array":
-                self.decoder.reset_settings(type[1])
-            elif type[0] == "object":
-                self.decoder.reset_settings(type[1], type[2])
+            if type == "boolean" or type == "null":
+                self.decoder.reset_settings(type)
             else:
-                if type == "bool" or type == "null":
-                    self.decoder.reset_settings(type)
-                else:
-                    self.decoder.reset_settings()
+                self.decoder.reset_settings()
         except KeyError as e:
             print("Unknown type", e)
 
@@ -55,8 +51,15 @@ class DecodingManager:
         return mask_logits
 
     def check_token(self, token: str) -> str:
+        if (isinstance(self.decoder, SpecialDecoding) and
+                self.decoder.index == 1 and self.decoder.type == "bool"):
+            self.decoder.bool = token
+            if token == "F":
+                self.decoder.len = 5
         for i in range(len(token)):
-            if token[i] in self.stop:
+            if token[i] in self.decoder.stop:
                 self.ended = True
+                if isinstance(self.decoder, ArrayDecoding):
+                    return token[:i + 1]
                 return token[:i]
         return token

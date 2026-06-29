@@ -1,13 +1,106 @@
 [
   {
-    "name": "fn_add_numbers",
-    "description": "Add two numbers together and return their sum.",
+    "name": "fn_update_display_settings",
+    "description": "Modify the visual layout, scaling, and color profile of a specific user device.",
     "parameters": {
-      "a": {
+      "device_name": {
+        "type": "string"
+      },
+      "brightness_pct": {
+        "type": "integer"
+      },
+      "gamma_correction": {
         "type": "number"
       },
-      "b": {
+      "supported_resolutions": {
+        "type": "array"
+      },
+      "enable_hdr": {
+        "type": "boolean"
+      },
+      "calibration_profile": {
+        "type": "null"
+      }
+    },
+    "returns": {
+      "type": "boolean"
+    }
+  },
+  {
+    "name": "fn_commit_database_transaction",
+    "description": "Write a row of metadata to the ledger logs with hex indicators and affected rows.",
+    "parameters": {
+      "table_identifier": {
+        "type": "string"
+      },
+      "row_index": {
+        "type": "integer"
+      },
+      "weight_coefficient": {
         "type": "number"
+      },
+      "associated_user_ids": {
+        "type": "array"
+      },
+      "is_encrypted": {
+        "type": "boolean"
+      },
+      "override_key": {
+        "type": "null"
+      }
+    },
+    "returns": {
+      "type": "string"
+    }
+  },
+  {
+    "name": "fn_register_iot_node",
+    "description": "Provision a new tracking sensor on the mesh network map with initial voltage logs.",
+    "parameters": {
+      "node_location_tag": {
+        "type": "string"
+      },
+      "ping_interval_sec": {
+        "type": "integer"
+      },
+      "recent_voltage_readings": {
+        "type": "array"
+      },
+      "mac_address_hex": {
+        "type": "string"
+      },
+      "is_active_mesh": {
+        "type": "boolean"
+      },
+      "firmware_patch_notes": {
+        "type": "null"
+      }
+    },
+    "returns": {
+      "type": "boolean"
+    }
+  },
+  {
+    "name": "fn_generate_invoice",
+    "description": "Calculate billing allocations and item logs for an enterprise profile.",
+    "parameters": {
+      "client_legal_name": {
+        "type": "string"
+      },
+      "purchased_item_counts": {
+        "type": "array"
+      },
+      "tax_rate_multiplier": {
+        "type": "number"
+      },
+      "ledger_hex_code": {
+        "type": "string"
+      },
+      "auto_charge_enabled": {
+        "type": "boolean"
+      },
+      "discount_coupon": {
+        "type": "null"
       }
     },
     "returns": {
@@ -15,51 +108,30 @@
     }
   },
   {
-    "name": "fn_greet",
-    "description": "Generate a greeting message for a person by name.",
+    "name": "fn_set_audio_channel",
+    "description": "Configure internal DSP gain levels and mixer priorities.",
     "parameters": {
-      "name": {
-        "type": "string"
-      }
-    },
-    "returns": {
-      "type": "string"
-    }
-  },
-  {
-    "name": "fn_substitute_string_with_regex",
-    "description": "Replace all occurrences matching a regex pattern in a string.",
-    "parameters": {
-      "source_string": {
+      "channel_label_text": {
         "type": "string"
       },
-      "regex": {
-        "type": "string"
+      "buffer_size_samples": {
+        "type": "integer"
       },
-      "replacement": {
-        "type": "string"
-      }
-    },
-    "returns": {
-      "type": "string"
-    }
-  },
-  {
-    "name": "fn_configure_system",
-    "description": "Modify system parameters including thresholds and active states.",
-    "parameters": {
-      "threshold": {
+      "frequency_khz": {
         "type": "number"
       },
-      "is_active": {
+      "bus_address_hex": {
+        "type": "string"
+      },
+      "low_latency_mode": {
         "type": "boolean"
       },
-      "mode": {
-        "type": "string"
+      "alternative_routing_target": {
+        "type": "null"
       }
     },
     "returns": {
-      "type": "boolean"
+      "type": "string"
     }
   }
 ]

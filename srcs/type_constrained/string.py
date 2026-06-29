@@ -1,6 +1,9 @@
-class StringDecoding:
-    def __init__(self):
-        self.stop = {"\"",  ""}
+from .Decoding import Decoding
+
+
+class StringDecoding(Decoding):
+    def __init__(self) -> None:
+        self.stop = {",",  ""}
 
     def reset_settings(self) -> None:
         self.start = True

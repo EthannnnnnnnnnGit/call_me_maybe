@@ -4,7 +4,8 @@ from typing import Any
 def define_name_prompt(prompts: list[dict[str, str]],
                        functions: list[dict[str, Any]]) -> list[str]:
     lst_prompts: list[str] = []
-    prompts_function: str = ""
+    prompts_function: str = "{\"name\": \"fn_null\", \"description\": "\
+                            "\"Function to choose when no ones correspond\"}"
     for func in functions:
         prompts_function += "\n{\"name\":\"" + func["name"] + "\""
         prompts_function += ",\"description\":\"" + func["description"] + "\"}"

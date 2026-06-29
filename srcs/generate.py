@@ -6,13 +6,14 @@ from srcs.func_names.func_name_decoding import get_name_mask
 from srcs.make_json import build_json
 import re
 from rich.console import Console
+from typing import Any
 
 
 STOP_CONDITION = {"\"", "<|im_end|>", "\n", ",", ""}
 
 
 class CallMeMaybe:
-    def __init__(self, prompts, functions):
+    def __init__(self, prompts: list[Any], functions: list[Any]) -> None:
         self.llm = Small_LLM_Model()
         self.prompts = prompts
         self.functions = functions
@@ -30,7 +31,7 @@ class CallMeMaybe:
             lst_types.append(re.findall(r'\w+', type))
         return lst_types
 
-    def transform_type(self, types: list[str], result):
+    def transform_type(self, types: list[str], result: str) -> Any:
         match types[0]:
             case "list":
                 return eval(result)
@@ -38,8 +39,17 @@ class CallMeMaybe:
                 if "." in result:
                     return float(result)
                 return int(result)
+            case "hex":
+                return hex(int(result))
+            case "boolean":
+                return True if result == "True" else False
+            case "null":
+                return None if result == "null" else result
+            case "array":
+                return [val.strip("\"") for val in
+                        result.strip("[]").split(", ")]
             case _:
-                return result
+                return result.strip("\"")
 
     def get_func_name(self, prompt: str, mask: np.array) -> str:
         tensor = self.llm.encode(prompt + "\"")
@@ -62,7 +72,7 @@ class CallMeMaybe:
         print()
         return result
 
-    def param_tensor_getter(self, defined_func, question) -> np.array:
+    def param_tensor_getter(self, defined_func, question: str) -> np.array:
         system = f"<im_start>system\n{defined_func}\n<im_end>"
         user = f"\n<im_start>user\n{question}\n <im_end>\n"
         qwen = "<im_start>assistant\n{\"parameters\": {"
@@ -79,10 +89,10 @@ class CallMeMaybe:
         for types, arg in zip(lst_types, defined_func["parameters"].keys()):
             tensor += self.llm.encode(f"\"{arg}\": ")[0].tolist()
             self.decoder.choose_decoder(types)
-            count = 0
+            max = 24
             result = ""
             self.console.print(f"{arg}: ", end="", style="red")
-            while count < 24:
+            while max:
                 mask = self.decoder.define_mask()
                 logits = np.array(self.llm.get_logits_from_input_ids(tensor))
                 logits += mask
@@ -94,7 +104,7 @@ class CallMeMaybe:
                 if self.decoder.ended:
                     tensor += self.llm.encode(",")[0].tolist()
                     break
-                count += 1
+                max -= 1
                 self.decoder.decoder.prev = tk
             params[arg] = self.transform_type(types, result)
             print()

@@ -1,15 +1,18 @@
-class IntegerDecoding:
-    def __init__(self):
+from .Decoding import Decoding
+
+
+class IntegerDecoding(Decoding):
+    def __init__(self) -> None:
         self.stop = {",", "}", ""}
+        self.number = [f"{i}" for i in range(10)]
 
     def reset_settings(self) -> None:
         self.start = True
 
     def get_mask(self) -> list[str]:
-        number = [f"{i}" for i in range(10)]
         if self.start:
-            mask = ["-"] + number
+            mask = ["-"] + self.number
             self.start = False
         else:
-            mask = number + [","]
+            mask = self.number + [","]
         return mask

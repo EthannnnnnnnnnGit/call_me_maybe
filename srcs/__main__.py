@@ -4,6 +4,7 @@ import srcs.generate as generator
 from srcs.parsing.parse_flags import get_flags
 from srcs.make_json import make_output_file
 from srcs.summary import summary_print
+from pydantic import ValidationError
 
 
 def main() -> None:
@@ -12,6 +13,10 @@ def main() -> None:
         prompts = get_json(flags.input)
         functions = get_json(flags.functions_definition)
         data_validator(prompts, functions)
+    except ValidationError as e:
+        for error in e.errors():
+            print(f"Parsing error: {error['msg']} at {error['loc']}")
+        return
     except Exception as e:
         print(e)
         return

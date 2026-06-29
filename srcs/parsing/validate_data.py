@@ -11,7 +11,7 @@ class FunctionValidator(BaseModel):
 
     @model_validator(mode="after")
     def naming_check(self) -> Self:
-        authorized = {"string", "integer", "hexadecimal",
+        authorized = {"string", "integer", "hex",
                       "number", "boolean", "null", "array"}
         if self.returns.__len__() != 1:
             raise ValueError("Returns dict should have precisely one value.")

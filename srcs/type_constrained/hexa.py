@@ -1,5 +1,8 @@
-class HexDecoding:
-    def __init__(self):
+from .Decoding import Decoding
+
+
+class HexDecoding(Decoding):
+    def __init__(self) -> None:
         self.stop = {",", "}", ""}
 
     def reset_settings(self) -> None:
