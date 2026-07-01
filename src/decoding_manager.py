@@ -1,6 +1,6 @@
 from llm_sdk.llm_sdk import Small_LLM_Model
 import numpy as np
-from srcs.type_constrained import (
+from src.type_constrained import (
     StringDecoding,
     IntegerDecoding,
     HexDecoding,

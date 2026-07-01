@@ -3,7 +3,7 @@ from .Decoding import Decoding
 
 class StringDecoding(Decoding):
     def __init__(self) -> None:
-        self.stop = {",",  ""}
+        self.stop = {",",  "}", ""}
 
     def reset_settings(self) -> None:
         self.start = True

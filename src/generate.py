@@ -1,9 +1,9 @@
 from llm_sdk.llm_sdk import Small_LLM_Model
 import numpy as np
-from srcs.decoding_manager import DecodingManager
-from srcs.func_names.func_filter import define_name_prompt
-from srcs.func_names.func_name_decoding import get_name_mask
-from srcs.make_json import build_json
+from src.decoding_manager import DecodingManager
+from src.func_names.func_filter import define_name_prompt
+from src.func_names.func_name_decoding import get_name_mask
+from src.make_json import build_json
 import re
 from rich.console import Console
 from typing import Any

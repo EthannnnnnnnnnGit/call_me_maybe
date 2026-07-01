@@ -1,9 +1,9 @@
-from srcs.parsing.parse_data import get_json
-from srcs.parsing.validate_data import data_validator
-import srcs.generate as generator
-from srcs.parsing.parse_flags import get_flags
-from srcs.make_json import make_output_file
-from srcs.summary import summary_print
+from src.parsing.parse_data import get_json
+from src.parsing.validate_data import data_validator
+import src.generate as generator
+from src.parsing.parse_flags import get_flags
+from src.make_json import make_output_file
+from src.summary import summary_print
 from pydantic import ValidationError
 
 
@@ -20,6 +20,11 @@ def main() -> None:
     except Exception as e:
         print(e)
         return
+    default_func = {"name": "fn_null",
+                    "description": "",
+                    "parameters": {"null": {"type": "null"}},
+                    "returns": {"type": "null"}}
+    functions.append(default_func)
     ia = generator.CallMeMaybe(prompts, functions)
     lst_json = ia.thinker()
     make_output_file(lst_json, flags.output)

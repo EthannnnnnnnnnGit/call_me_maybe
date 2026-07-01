@@ -11,14 +11,14 @@ run: venv
 	TRANSFORMERS_CACHE=$(HF_CACHE)/transformers \
 	HF_DATASETS_CACHE=$(HF_CACHE)/datasets \
 	UV_PROJECT_ENVIRONMENT=$(VENV_PATH) \
-	uv run python3 -m srcs
+	uv run python3 -m src
 
 debug: venv
 	@HF_HOME=$(HF_CACHE) \
 	TRANSFORMERS_CACHE=$(HF_CACHE)/transformers \
 	HF_DATASETS_CACHE=$(HF_CACHE)/datasets \
 	UV_PROJECT_ENVIRONMENT=$(VENV_PATH) \
-	uv run python3 -m pdb srcs
+	uv run python3 -m pdb src
 
 lint:
 	flake8 srcs

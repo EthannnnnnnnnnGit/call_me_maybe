@@ -1,106 +1,13 @@
 [
   {
-    "name": "fn_update_display_settings",
-    "description": "Modify the visual layout, scaling, and color profile of a specific user device.",
+    "name": "fn_add_numbers",
+    "description": "Add two numbers together and return their sum.",
     "parameters": {
-      "device_name": {
-        "type": "string"
-      },
-      "brightness_pct": {
-        "type": "integer"
-      },
-      "gamma_correction": {
+      "a": {
         "type": "number"
       },
-      "supported_resolutions": {
-        "type": "array"
-      },
-      "enable_hdr": {
-        "type": "boolean"
-      },
-      "calibration_profile": {
-        "type": "null"
-      }
-    },
-    "returns": {
-      "type": "boolean"
-    }
-  },
-  {
-    "name": "fn_commit_database_transaction",
-    "description": "Write a row of metadata to the ledger logs with hex indicators and affected rows.",
-    "parameters": {
-      "table_identifier": {
-        "type": "string"
-      },
-      "row_index": {
-        "type": "integer"
-      },
-      "weight_coefficient": {
+      "b": {
         "type": "number"
-      },
-      "associated_user_ids": {
-        "type": "array"
-      },
-      "is_encrypted": {
-        "type": "boolean"
-      },
-      "override_key": {
-        "type": "null"
-      }
-    },
-    "returns": {
-      "type": "string"
-    }
-  },
-  {
-    "name": "fn_register_iot_node",
-    "description": "Provision a new tracking sensor on the mesh network map with initial voltage logs.",
-    "parameters": {
-      "node_location_tag": {
-        "type": "string"
-      },
-      "ping_interval_sec": {
-        "type": "integer"
-      },
-      "recent_voltage_readings": {
-        "type": "array"
-      },
-      "mac_address_hex": {
-        "type": "string"
-      },
-      "is_active_mesh": {
-        "type": "boolean"
-      },
-      "firmware_patch_notes": {
-        "type": "null"
-      }
-    },
-    "returns": {
-      "type": "boolean"
-    }
-  },
-  {
-    "name": "fn_generate_invoice",
-    "description": "Calculate billing allocations and item logs for an enterprise profile.",
-    "parameters": {
-      "client_legal_name": {
-        "type": "string"
-      },
-      "purchased_item_counts": {
-        "type": "array"
-      },
-      "tax_rate_multiplier": {
-        "type": "number"
-      },
-      "ledger_hex_code": {
-        "type": "string"
-      },
-      "auto_charge_enabled": {
-        "type": "boolean"
-      },
-      "discount_coupon": {
-        "type": "null"
       }
     },
     "returns": {
@@ -108,26 +15,53 @@
     }
   },
   {
-    "name": "fn_set_audio_channel",
-    "description": "Configure internal DSP gain levels and mixer priorities.",
+    "name": "fn_greet",
+    "description": "Generate a greeting message for a person by name.",
     "parameters": {
-      "channel_label_text": {
+      "name": {
         "type": "string"
-      },
-      "buffer_size_samples": {
-        "type": "integer"
-      },
-      "frequency_khz": {
+      }
+    },
+    "returns": {
+      "type": "string"
+    }
+  },
+  {
+    "name": "fn_reverse_string",
+    "description": "Reverse a string and return the reversed result.",
+    "parameters": {
+      "s": {
+        "type": "string"
+      }
+    },
+    "returns": {
+      "type": "string"
+    }
+  },
+  {
+    "name": "fn_get_square_root",
+    "description": "Calculate the square root of a number.",
+    "parameters": {
+      "a": {
         "type": "number"
-      },
-      "bus_address_hex": {
+      }
+    },
+    "returns": {
+      "type": "number"
+    }
+  },
+  {
+    "name": "fn_substitute_string_with_regex",
+    "description": "Replace all occurrences matching a regex pattern in a string.",
+    "parameters": {
+      "source_string": {
         "type": "string"
       },
-      "low_latency_mode": {
-        "type": "boolean"
+      "regex": {
+        "type": "string"
       },
-      "alternative_routing_target": {
-        "type": "null"
+      "replacement": {
+        "type": "string"
       }
     },
     "returns": {
