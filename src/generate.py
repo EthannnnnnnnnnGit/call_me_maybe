@@ -20,9 +20,9 @@ class CallMeMaybe:
         self.decoder = DecodingManager(self.llm)
         self.console = Console()
 
-    def types_getter(self, func: dict) -> list[list[str]]:
+    def types_getter(self, func: dict[str, Any]) -> list[list[str]]:
         regex_validator = r'^\w+$|^\w+\[\w+\]$|^\w+\[\w+,\s*\w+\]$'
-        lst_types = []
+        lst_types: list[Any] = []
         for type in func["parameters"].values():
             type = type["type"]
             if not re.match(regex_validator, type):
@@ -72,7 +72,8 @@ class CallMeMaybe:
         print()
         return result
 
-    def param_tensor_getter(self, defined_func, question: str) -> np.array:
+    def param_tensor_getter(self, defined_func: dict[str, Any],
+                            question: str) -> np.array:
         system = f"<im_start>system\n{defined_func}\n<im_end>"
         user = f"\n<im_start>user\n{question}\n <im_end>\n"
         qwen = "<im_start>assistant\n{\"parameters\": {"
@@ -80,10 +81,10 @@ class CallMeMaybe:
         tensor = self.llm.encode(prompt)[0].tolist()
         return tensor
 
-    def get_func_params(self, name: str, prompt: str,
-                        defined_func: dict[str, np.array]) -> list[str]:
+    def get_func_params(self, prompt: dict[str, str],
+                        defined_func: dict[str, Any]) -> dict[str, Any]:
         lst_types = self.types_getter(defined_func)
-        params = {}
+        params: dict[str, Any] = {}
         tensor = self.param_tensor_getter(defined_func, prompt["prompt"])
         mask = None
         for types, arg in zip(lst_types, defined_func["parameters"].keys()):
@@ -111,14 +112,16 @@ class CallMeMaybe:
         print()
         return params
 
-    def function_getter(self, name: str, functions: list[dict]) -> dict | None:
+    def function_getter(self, name: str,
+                        functions: list[dict[str,
+                                             Any]]) -> dict[str, Any] | None:
         for func in functions:
             if func["name"] == name:
                 return func
         return None
 
-    def thinker(self) -> list[dict]:
-        lst_results: list = []
+    def thinker(self) -> list[dict[str, Any]]:
+        lst_results: list[dict[str, Any]] = []
         lst_prompts = define_name_prompt(self.prompts, self.functions)
         func_mask = get_name_mask(self.llm, self.functions)
         for i, prompt in enumerate(lst_prompts):
@@ -129,7 +132,7 @@ class CallMeMaybe:
             if not defined_func:
                 print("The name of the function is not in the given one.")
                 continue
-            params = self.get_func_params(name, self.prompts[i], defined_func)
+            params = self.get_func_params(self.prompts[i], defined_func)
             lst_results.append(build_json(self.prompts[i]["prompt"],
                                           name, params))
         return lst_results

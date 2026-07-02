@@ -10,3 +10,7 @@ dependencies = [
     "numpy",
     "pydantic",
 ]
+
+[tool.mypy]
+follow_imports = "silent"
+

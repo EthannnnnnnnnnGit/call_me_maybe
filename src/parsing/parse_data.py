@@ -2,7 +2,7 @@ import json
 from typing import Any
 
 
-def raise_on_dupplicate_keys(json_values):
+def raise_on_dupplicate_keys(json_values: list[tuple[Any, Any]]) -> Any:
     temp = {}
     for key, val in json_values:
         if key in temp:

@@ -1,6 +1,7 @@
 
 from pydantic import BaseModel, Field, model_validator
-from typing import Self
+from typing_extensions import Self
+from typing import Any
 
 
 class FunctionValidator(BaseModel):
@@ -37,7 +38,8 @@ class Prompt(BaseModel):
     prompt: str = Field(min_length=1)
 
 
-def data_validator(lst_prompts, lst_funcs) -> None:
+def data_validator(lst_prompts: list[dict[Any, Any]],
+                   lst_funcs: list[dict[Any, Any]]) -> None:
     for prompt in lst_prompts:
         Prompt(**prompt)
     for func in lst_funcs:

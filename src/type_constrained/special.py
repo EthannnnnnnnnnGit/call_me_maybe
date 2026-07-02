@@ -1,10 +1,11 @@
 from .Decoding import Decoding
+from typing import Any
 
 
 class SpecialDecoding(Decoding):
     def __init__(self, type: str) -> None:
-        self.states = {
-            "null": [val for val in "null"],
+        self.states: dict[str, Any] = {
+            "null": "null",
             "bool": {"T": "true", "F": "false"}
         }
         self.type = type
@@ -17,14 +18,15 @@ class SpecialDecoding(Decoding):
         self.prev = None
 
     def get_mask(self) -> list[str]:
+        mask: list[str] = []
         if self.index < self.len:
             if self.type == "null":
-                mask = self.states[self.type][self.index]
+                mask = [self.states[self.type][self.index]]
             else:
                 if self.index == 0:
                     mask = ["F", "T"]
                 else:
-                    mask = self.states[self.type][self.bool][self.index]
+                    mask = [self.states[self.type][self.bool][self.index]]
         else:
             mask = [","]
         self.index += 1

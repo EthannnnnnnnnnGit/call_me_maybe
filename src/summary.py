@@ -1,8 +1,9 @@
 from rich.console import Console
 from rich.table import Table
+from typing import Any
 
 
-def summary_print(lst_jsons: list[dict]) -> None:
+def summary_print(lst_jsons: list[dict[str, Any]]) -> None:
     console = Console()
     table = Table(title="Summary")
 

@@ -2,14 +2,39 @@
 
 
 ## Description
-
+Call Me Maybe is a LLM oriented project.   
+The main goal is to guide llm into the right tokens to make a valid json output.  
+For that, the program should use the given llm sdk and reads the logits token by token and apply constrained decoding to choose tokens that satisfy json format.   
+The program should be able to read from any json valid and returns valid json containing the functions names, parameters and the prompt link to that choice.
 
 ## Instructions
 
+**To run the program, install the dependencies first with the following command**
 
-## Resources
-Qwen: https://qwen.readthedocs.io/en/latest/getting_started/concepts.html  
-Json format: https://www.json.org/json-fr.html   
+```bash
+make install
+```
+
+**And then run it with or in the debug mode with these two commands**
+
+```bash
+make run
+```
+```bash
+make debug
+```
+
+**For type checking, strict type checking and cleaning here is the followings commands**
+
+```bash
+make lint
+```
+```bash
+make lint-strict
+```
+```bash
+make clean
+```
 
 ### Functions names's prompt
 
@@ -31,6 +56,7 @@ Substitute the word 'cat' with 'dog' in 'The cat sat on the mat with another cat
 {"name":
 """
 ```
+
 ### Parameters's prompt
 
 ```python
@@ -45,3 +71,8 @@ What is the sum of 2 and 3?
 {"parameters": {"a": 
 """
 ```
+
+## Resources
+
+**Qwen :** https://qwen.readthedocs.io/en/latest/getting_started/concepts.html  
+**Json format :** https://www.json.org/json-fr.html   

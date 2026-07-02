@@ -21,12 +21,12 @@ debug: venv
 	uv run python3 -m pdb src
 
 lint:
-	flake8 srcs
-	mypy srcs --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
+	uv run flake8 src
+	uv run mypy src --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
 
 lint-strict:
-	flake8 srcs
-	mypy srcs --strict
+	uv run flake8 src
+	uv run mypy src --strict
 
 clean:
 	rm -rf */*__pycache__ */*/*__pycache__

@@ -25,7 +25,7 @@ class NumberDecoding(Decoding):
                 self.frac = True
                 mask = self.numbers
             case _:
-                tmp: list = [","]
+                tmp = [","]
                 if not self.frac:
                     tmp.append(".")
                 if not self.exponent:

@@ -6,7 +6,7 @@ from src.type_constrained import (
     HexDecoding,
     NumberDecoding,
     SpecialDecoding,
-    ArrayDecoding
+    ArrayDecoding,
 )
 
 
@@ -21,7 +21,6 @@ class DecodingManager:
             "null": SpecialDecoding("null"),
             "array": ArrayDecoding()
         }
-        self.decoder = None
         self.llm = llm
         self.logits = llm.get_logits_from_input_ids([0])
         self.ended = False
@@ -30,10 +29,7 @@ class DecodingManager:
         self.ended = False
         try:
             self.decoder = self.pipelines[type[0]]
-            if type == "boolean" or type == "null":
-                self.decoder.reset_settings(type)
-            else:
-                self.decoder.reset_settings()
+            self.decoder.reset_settings()
         except KeyError as e:
             print("Unknown type", e)
 
