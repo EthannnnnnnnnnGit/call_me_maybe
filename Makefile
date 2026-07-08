@@ -33,4 +33,9 @@ clean:
 	rm -rf .mypy_cache
 	rm -rf data/output
 
-.PHONY: venv
+fclean:
+	rm -rf $(VENV_PATH)
+	rm -rf $(HF_CACHE)
+	uv clean
+
+.PHONY: venv install run debug lint lint-strict clean fclean

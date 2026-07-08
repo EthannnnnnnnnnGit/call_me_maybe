@@ -74,5 +74,5 @@ What is the sum of 2 and 3?
 
 ## Resources
 
-**Qwen :** https://qwen.readthedocs.io/en/latest/getting_started/concepts.html  
-**Json format :** https://www.json.org/json-fr.html   
+[Qwen's documentation](https://qwen.readthedocs.io/en/latest/getting_started/concepts.html)  
+[Json formating](https://www.json.org/json-fr.html)   
