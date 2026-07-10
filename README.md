@@ -1,10 +1,10 @@
 *This project has been created as part of the 42 curriculum by eel-kerc.*
 
 
-## Description
-Call Me Maybe is a LLM oriented project.   
+## <font color="#1434A4">Description</font>
+Call Me Maybe is a `LLM` oriented project.   
 The main goal is to guide llm into the right tokens to make a valid json output.  
-For that, the program should use the given llm sdk and reads the logits token by token and apply constrained decoding to choose tokens that satisfy json format.   
+For that, the program should use the given llm sdk and reads the `logits` token by token and apply `constrained decoding` to choose tokens that satisfy json format.   
 The program should be able to read from any json valid and returns valid json containing the functions names, parameters and the prompt link to that choice.
 
 ## Instructions
@@ -112,17 +112,16 @@ Perfomance depends on the total number of functions and their sizes because it a
 
 | Nb of functions (same size) | Time (seconds) |
 |---						  |---			   |
-|100						  |100			   |
-|100						  |100			   |
-|100						  |100			   |
+|5	  					      |52.7			   |
+|10						      |64.8			   |
+|20							  |111.3		   |
 
 ### Function's parameters
 
-| Nb of functions (same size) | Time (seconds) |
-|---						  |---			   |
-|100						  |100			   |
-|100						  |100			   |
-|100						  |100			   |
+| Size of functions | Time (seconds)   |
+|---			    |---			   |
+|Default			|55.1			   |
+|Default x2			|71.1			   |
 
 Performance can be increased by withdrawing functions descriptions or still have still small optimisations but the given prompt has been choose to keep a minimum of precision and consistency.
 Batching and catching can also be made to improved generation but catching is catching is not possible in this project, as well as batching is not the main objective of this project.
@@ -151,7 +150,8 @@ Both parsings and generations were tested.
 ## Example usage
 
 This program can be used to associate data from list of fuction, and filtering data that are not linked to any of the given function.  
-The user should determine what prompt to use and put them into a json format. Then the user should determine what function to build and then run the program. He will have a list a results that he can reads more easily.
+The user should determine what prompt to use and put them into a json format. Then the user should determine what function to build and then run the program. He will have a list a results that he can reads more easily.  
+This data can then be reattribute into other program with corresponding function and data that are in the null function can be ignored because not in the context.
 
 ## Resources
 
@@ -159,6 +159,7 @@ The user should determine what prompt to use and put them into a json format. Th
 - [Json formating](https://www.json.org/json-fr.html)  
 - [Mermaid visual](https://mermaid.ai/open-source/intro/getting-started.html)
 - [Markdown Guide](https://www.markdownguide.org/extended-syntax/)
+- [Color Picker](https://htmlcolorcodes.com/)
 
 ### AI Usage
 

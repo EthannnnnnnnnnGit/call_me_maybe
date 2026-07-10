@@ -33,11 +33,11 @@ class CallMeMaybe:
 
     def transform_type(self, types: list[str], result: str) -> Any:
         match types[0]:
-            case "list":
-                return eval(result)
             case "number" | "integer":
                 if "." in result:
                     return float(result)
+                if "e" in result:
+                    return int(float(result))
                 return int(result)
             case "hex":
                 return hex(int(result))
@@ -52,8 +52,7 @@ class CallMeMaybe:
                 return result.strip("\"")
 
     def get_func_name(self, prompt: str, mask: np.array) -> str:
-        tensor = self.llm.encode(prompt + "\"")
-        tensor = [t for t in tensor[0]]
+        tensor = self.llm.encode(prompt + "\"")[0].tolist()
         result = ""
         count = 0
         tk = None
