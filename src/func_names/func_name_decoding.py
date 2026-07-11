@@ -16,7 +16,7 @@ def get_name_mask(llm: Small_LLM_Model,
     return mask
 
 
-def get_max_size(llm: Small_LLM_Model, functions: list[dict[Any]]):
+def get_max_size(llm: Small_LLM_Model, functions: list[dict[str, Any]]) -> int:
     max = 0
     for func in functions:
         count = len(llm.encode(func["name"])[0].tolist())

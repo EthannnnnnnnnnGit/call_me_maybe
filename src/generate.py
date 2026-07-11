@@ -51,7 +51,7 @@ class CallMeMaybe:
             case _:
                 return result.strip("\"")
 
-    def get_func_name(self, prompt: str, mask: np.array, max) -> str:
+    def get_func_name(self, prompt: str, mask: np.array, max: int) -> str:
         tensor = self.llm.encode(prompt + "\"")[0].tolist()
         result = ""
         tk = None
