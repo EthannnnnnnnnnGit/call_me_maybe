@@ -14,3 +14,12 @@ def get_name_mask(llm: Small_LLM_Model,
     for tensor in authorized:
         mask[tensor] = 0
     return mask
+
+
+def get_max_size(llm: Small_LLM_Model, functions: list[dict[Any]]):
+    max = 0
+    for func in functions:
+        count = len(llm.encode(func["name"])[0].tolist())
+        if count > max:
+            max = count
+    return max + 5

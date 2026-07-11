@@ -1,13 +1,13 @@
 *This project has been created as part of the 42 curriculum by eel-kerc.*
 
 
-## <font color="#1434A4">Description</font>
+## <font color="#89CFF0">Description</font>
 Call Me Maybe is a `LLM` oriented project.   
 The main goal is to guide llm into the right tokens to make a valid json output.  
 For that, the program should use the given llm sdk and reads the `logits` token by token and apply `constrained decoding` to choose tokens that satisfy json format.   
 The program should be able to read from any json valid and returns valid json containing the functions names, parameters and the prompt link to that choice.
 
-## Instructions
+## <font color=#B2BEB5>Instructions</font>
 
 **To run the program, install the dependencies first with the following command**
 
@@ -40,7 +40,7 @@ make clean
 make fclean
 ```
 
-## Algorithm explanation
+## <font color=#C4A484>Algorithm explanation</font>
 
 The program runs as a prompt pipeline. It first get every prompts and function's definitions and then iterate on every prompt with the following pipeline. On the end, the program build the json with every values that the llm has returned on a valid format.
 
@@ -57,7 +57,7 @@ graph LR
 ```
 
 
-## Design decisions
+## <font color=#AFE1AF>Design decisions</font>
 
 *The following prompts format has been chosen to get the values from the LLM.*
 
@@ -104,7 +104,7 @@ What is the sum of 2 and 3?
 The parameters's prompts contains the functions that had been chosen by the llm as well as the prompt.  
 The llm is given in the same context but now as generating the parameters of the functions. Contrained Decoding is apply to the token choosen to make the result valid into the type of the parameters. At each generation, the result of the parameters founded is add to the prompt for the next parameters's generation of that prompt.
 
-## Performance analysis
+## <font color=#DE3163>Performance analysis</font>
 
 Perfomance depends on the total number of functions and their sizes because it affect the lenght of the prompt given to the llm. Here is a visual of how is it affect:
 
@@ -126,7 +126,7 @@ Perfomance depends on the total number of functions and their sizes because it a
 Performance can be increased by withdrawing functions descriptions or still have still small optimisations but the given prompt has been choose to keep a minimum of precision and consistency.
 Batching and catching can also be made to improved generation but catching is catching is not possible in this project, as well as batching is not the main objective of this project.
 
-## Challenges faced
+## <font color=#F3E5AB>Challenges faced</font>
 
 *Here is a list of the differents challenges in this project that made it difficult :*
 
@@ -140,20 +140,20 @@ Generation reliability and performance has been resolved be optimising prompt.
 Json format has been solved by not letting the llm managing the format but the program.  
 A type getter has been implemented to determine which constrained decoding to use.
 
-## Testing strategy
+## <font color=#C3B1E1>Testing strategy</font>
 
 Program was first testing on the defaults test to assure project directions.  
 Every new implementation was tested first on the basic tests.  
 After all that, complex tests has been made to verify project adaptibility and edges cases.  
 Both parsings and generations were tested.
 
-## Example usage
+## <font color=#0BDA51>Example usage</font>
 
 This program can be used to associate data from list of fuction, and filtering data that are not linked to any of the given function.  
 The user should determine what prompt to use and put them into a json format. Then the user should determine what function to build and then run the program. He will have a list a results that he can reads more easily.  
 This data can then be reattribute into other program with corresponding function and data that are in the null function can be ignored because not in the context.
 
-## Resources
+## <font color=#967969>Resources</font>
 
 - [Qwen's documentation](https://qwen.readthedocs.io/en/latest/getting_started/concepts.html)  
 - [Json formating](https://www.json.org/json-fr.html)  

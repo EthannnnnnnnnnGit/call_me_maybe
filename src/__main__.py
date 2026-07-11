@@ -8,8 +8,8 @@ from pydantic import ValidationError
 
 
 def main() -> None:
-    flags = get_flags()
     try:
+        flags = get_flags()
         prompts = get_json(flags.input)
         functions = get_json(flags.functions_definition)
         data_validator(prompts, functions)
@@ -18,7 +18,7 @@ def main() -> None:
             print(f"Parsing error: {error['msg']} at {error['loc']}")
         return
     except Exception as e:
-        print(e)
+        print("Parsing error:", e)
         return
     default_func = {"name": "fn_null",
                     "description": "",

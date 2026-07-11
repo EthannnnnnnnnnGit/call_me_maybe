@@ -38,4 +38,11 @@ fclean:
 	rm -rf $(HF_CACHE)
 	uv clean
 
-.PHONY: venv install run debug lint lint-strict clean fclean
+test: venv
+	@HF_HOME=$(HF_CACHE) \
+	TRANSFORMERS_CACHE=$(HF_CACHE)/transformers \
+	HF_DATASETS_CACHE=$(HF_CACHE)/datasets \
+	UV_PROJECT_ENVIRONMENT=$(VENV_PATH) \
+	uv run python3 -m src --functions_definition ~/test/func_test.json --input ~/test/prompt_test.json
+
+.PHONY: venv install run debug lint lint-strict clean fclean test

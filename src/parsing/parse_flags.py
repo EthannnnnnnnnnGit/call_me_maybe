@@ -2,7 +2,7 @@ import argparse
 
 
 def get_flags() -> argparse.Namespace:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(exit_on_error=False)
 
     parser.add_argument('--functions_definition', type=str,
                         default='data/input/functions_definition.json')

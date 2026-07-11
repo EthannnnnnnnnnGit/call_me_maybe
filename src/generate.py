@@ -2,7 +2,7 @@ from llm_sdk.llm_sdk import Small_LLM_Model
 import numpy as np
 from src.decoding_manager import DecodingManager
 from src.func_names.func_filter import define_name_prompt
-from src.func_names.func_name_decoding import get_name_mask
+from src.func_names.func_name_decoding import get_name_mask, get_max_size
 from src.make_json import build_json
 import re
 from rich.console import Console
@@ -51,13 +51,12 @@ class CallMeMaybe:
             case _:
                 return result.strip("\"")
 
-    def get_func_name(self, prompt: str, mask: np.array) -> str:
+    def get_func_name(self, prompt: str, mask: np.array, max) -> str:
         tensor = self.llm.encode(prompt + "\"")[0].tolist()
         result = ""
-        count = 0
         tk = None
         self.console.print("Name : ", end="", style="green")
-        while count < 20:
+        while max:
             logits = np.array(self.llm.get_logits_from_input_ids(tensor))
             logits += mask
             index = logits.argmax()
@@ -67,7 +66,7 @@ class CallMeMaybe:
             print(tk, end="", flush=True)
             result += tk
             tensor += self.llm.encode(tk)[0]
-            count += 1
+            max -= 1
         print()
         return result
 
@@ -86,10 +85,10 @@ class CallMeMaybe:
         params: dict[str, Any] = {}
         tensor = self.param_tensor_getter(defined_func, prompt["prompt"])
         mask = None
+        max = len(self.llm.encode(prompt["prompt"])[0].tolist()) + 5
         for types, arg in zip(lst_types, defined_func["parameters"].keys()):
             tensor += self.llm.encode(f"\"{arg}\": ")[0].tolist()
             self.decoder.choose_decoder(types)
-            max = 24
             result = ""
             self.console.print(f"{arg}: ", end="", style="red")
             while max:
@@ -123,10 +122,11 @@ class CallMeMaybe:
         lst_results: list[dict[str, Any]] = []
         lst_prompts = define_name_prompt(self.prompts, self.functions)
         func_mask = get_name_mask(self.llm, self.functions)
+        max_token = get_max_size(self.llm, self.functions)
         for i, prompt in enumerate(lst_prompts):
             self.console.print("Prompt:", self.prompts[i]["prompt"],
                                style="blue")
-            name = self.get_func_name(prompt, func_mask)
+            name = self.get_func_name(prompt, func_mask, max_token)
             defined_func = self.function_getter(name, self.functions)
             if not defined_func:
                 print("The name of the function is not in the given one.")
