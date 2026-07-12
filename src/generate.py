@@ -32,24 +32,26 @@ class CallMeMaybe:
         return lst_types
 
     def transform_type(self, types: list[str], result: str) -> Any:
-        match types[0]:
-            case "number" | "integer":
-                if "." in result:
+        try:
+            match types[0]:
+                case "number":
                     return float(result)
-                if "e" in result:
-                    return int(float(result))
-                return int(result)
-            case "hex":
-                return hex(int(result))
-            case "boolean":
-                return True if result == "True" else False
-            case "null":
-                return None if result == "null" else result
-            case "array":
-                return [val.strip("\"") for val in
-                        result.strip("[]").split(", ")]
-            case _:
-                return result.strip("\"")
+                case "integer":
+                    return int(result)
+                case "hex":
+                    return hex(int(result))
+                case "boolean":
+                    return True if result == "True" else False
+                case "null":
+                    return None if result == "null" else result
+                case "array":
+                    return [val.strip("\"") for val in
+                            result.strip("[]").split(", ")]
+                case _:
+                    result = result.strip("'").strip()
+                    return result.encode('utf-8').decode('unicode_escape')
+        except Exception:
+            return result
 
     def get_func_name(self, prompt: str, mask: np.array, max: int) -> str:
         tensor = self.llm.encode(prompt + "\"")[0].tolist()

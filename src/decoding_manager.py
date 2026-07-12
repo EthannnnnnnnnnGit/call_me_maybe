@@ -54,6 +54,11 @@ class DecodingManager:
                 self.decoder.len = 5
         for i in range(len(token)):
             if token[i] in self.decoder.stop:
+                prev = token[i - 1]
+                if i == 0:
+                    prev = ""
+                if isinstance(self.decoder, StringDecoding) and (prev != "'" and self.decoder.prev[-1] != "'"):
+                    continue
                 self.ended = True
                 if isinstance(self.decoder, ArrayDecoding):
                     return token[:i + 1]

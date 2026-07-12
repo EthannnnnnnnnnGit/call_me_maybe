@@ -20,11 +20,11 @@ debug: venv
 	UV_PROJECT_ENVIRONMENT=$(VENV_PATH) \
 	uv run python3 -m pdb src
 
-lint:
+lint: install
 	uv run flake8 src
 	uv run mypy src --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
 
-lint-strict:
+lint-strict: install
 	uv run flake8 src
 	uv run mypy src --strict
 
