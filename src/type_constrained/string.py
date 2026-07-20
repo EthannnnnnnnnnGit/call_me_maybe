@@ -2,6 +2,7 @@ from .Decoding import Decoding
 
 
 class StringDecoding(Decoding):
+    """Manage constrained decoding of string type"""
     def __init__(self) -> None:
         self.stop = {"}", ",", ""}
 
@@ -10,7 +11,7 @@ class StringDecoding(Decoding):
 
     def get_mask(self) -> list[str]:
         if self.start:
-            mask = ["'"]
+            mask = ["\""]
             self.start = False
         else:
             mask = []

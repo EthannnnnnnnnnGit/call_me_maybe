@@ -11,7 +11,8 @@ run: venv
 	TRANSFORMERS_CACHE=$(HF_CACHE)/transformers \
 	HF_DATASETS_CACHE=$(HF_CACHE)/datasets \
 	UV_PROJECT_ENVIRONMENT=$(VENV_PATH) \
-	uv run python3 -m src
+	uv run python3 -m src $(ARGS)
+
 
 debug: venv
 	@HF_HOME=$(HF_CACHE) \

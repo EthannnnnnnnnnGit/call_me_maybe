@@ -2,6 +2,7 @@ import argparse
 
 
 def get_flags() -> argparse.Namespace:
+    """Get flags of files parser"""
     parser = argparse.ArgumentParser(exit_on_error=False)
 
     parser.add_argument('--functions_definition', type=str,

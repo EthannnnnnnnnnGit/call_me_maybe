@@ -3,6 +3,7 @@ from typing import Any
 
 
 class SpecialDecoding(Decoding):
+    """Manage constrained decoding of bool and null types"""
     def __init__(self, type: str) -> None:
         self.states: dict[str, Any] = {
             "null": "null",

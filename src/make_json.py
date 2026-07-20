@@ -5,6 +5,7 @@ from pathlib import Path
 
 def make_output_file(lst_json: list[dict[str, Any]],
                      outputfilename: str) -> None:
+    """Create if needed json output and write data into it"""
     output_file = Path(outputfilename)
     output_file.parent.mkdir(parents=True, exist_ok=True)
     try:
@@ -18,6 +19,7 @@ def make_output_file(lst_json: list[dict[str, Any]],
 
 def build_json(prompt: str, name: str,
                params: dict[str, Any]) -> dict[str, Any]:
+    """Build json format with given prompt, function name and parameters"""
     json = {
         "prompt": prompt,
         "name": name,

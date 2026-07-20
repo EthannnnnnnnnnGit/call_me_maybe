@@ -11,6 +11,7 @@ from src.type_constrained import (
 
 
 class DecodingManager:
+    """Manage constrained decoding and token validation"""
     def __init__(self, llm: Small_LLM_Model) -> None:
         self.pipelines = {
             "string": StringDecoding(),
@@ -26,6 +27,7 @@ class DecodingManager:
         self.ended = False
 
     def choose_decoder(self, type: list[str]) -> None:
+        """Decide decoder depending of type"""
         self.ended = False
         try:
             self.decoder = self.pipelines[type[0]]
@@ -34,6 +36,7 @@ class DecodingManager:
             print("Unknown type", e)
 
     def define_mask(self) -> np.array:
+        """Get the mask and transform it into numpy array"""
         mask = self.decoder.get_mask()
         if not mask:
             return np.full_like(self.logits, 0)
@@ -47,6 +50,7 @@ class DecodingManager:
         return mask_logits
 
     def check_token(self, token: str) -> str:
+        """Verify is token is an end condition"""
         if (isinstance(self.decoder, SpecialDecoding) and
                 self.decoder.index == 1 and self.decoder.type == "bool"):
             self.decoder.bool = token
@@ -57,7 +61,8 @@ class DecodingManager:
                 prev = token[i - 1]
                 if i == 0:
                     prev = ""
-                if isinstance(self.decoder, StringDecoding) and (prev != "'" and self.decoder.prev[-1] != "'"):
+                if (isinstance(self.decoder, StringDecoding) and
+                        (prev != "\"" and self.decoder.prev[-1] != "\"")):
                     continue
                 self.ended = True
                 if isinstance(self.decoder, ArrayDecoding):

@@ -13,6 +13,8 @@ STOP_CONDITION = {"\"", "<|im_end|>", "\n", ",", ""}
 
 
 class CallMeMaybe:
+    """Manage llm generation and result format.
+    Is the core object of the subject"""
     def __init__(self, prompts: list[Any], functions: list[Any]) -> None:
         self.llm = Small_LLM_Model()
         self.prompts = prompts
@@ -21,6 +23,7 @@ class CallMeMaybe:
         self.console = Console()
 
     def types_getter(self, func: dict[str, Any]) -> list[list[str]]:
+        """Get type of the parameters"""
         regex_validator = r'^\w+$|^\w+\[\w+\]$|^\w+\[\w+,\s*\w+\]$'
         lst_types: list[Any] = []
         for type in func["parameters"].values():
@@ -32,6 +35,7 @@ class CallMeMaybe:
         return lst_types
 
     def transform_type(self, types: list[str], result: str) -> Any:
+        """Transform data into right type"""
         try:
             match types[0]:
                 case "number":
@@ -48,12 +52,13 @@ class CallMeMaybe:
                     return [val.strip("\"") for val in
                             result.strip("[]").split(", ")]
                 case _:
-                    result = result.strip("'").strip()
+                    result = result.strip("\"").strip()
                     return result.encode('utf-8').decode('unicode_escape')
         except Exception:
             return result
 
     def get_func_name(self, prompt: str, mask: np.array, max: int) -> str:
+        """Generation of the function names"""
         tensor = self.llm.encode(prompt + "\"")[0].tolist()
         result = ""
         tk = None
@@ -63,6 +68,7 @@ class CallMeMaybe:
             logits += mask
             index = logits.argmax()
             tk = self.llm.decode(index)
+
             if tk in STOP_CONDITION:
                 break
             print(tk, end="", flush=True)
@@ -74,6 +80,7 @@ class CallMeMaybe:
 
     def param_tensor_getter(self, defined_func: dict[str, Any],
                             question: str) -> np.array:
+        """Define prompt for parameters's functions"""
         system = f"<im_start>system\n{defined_func}\n<im_end>"
         user = f"\n<im_start>user\n{question}\n <im_end>\n"
         qwen = "<im_start>assistant\n{\"parameters\": {"
@@ -83,16 +90,19 @@ class CallMeMaybe:
 
     def get_func_params(self, prompt: dict[str, str],
                         defined_func: dict[str, Any]) -> dict[str, Any]:
+        """Generation of all parameters of a prompt"""
         lst_types = self.types_getter(defined_func)
         params: dict[str, Any] = {}
         tensor = self.param_tensor_getter(defined_func, prompt["prompt"])
         mask = None
         max = len(self.llm.encode(prompt["prompt"])[0].tolist()) + 5
+
         for types, arg in zip(lst_types, defined_func["parameters"].keys()):
             tensor += self.llm.encode(f"\"{arg}\": ")[0].tolist()
             self.decoder.choose_decoder(types)
             result = ""
             self.console.print(f"{arg}: ", end="", style="red")
+
             while max:
                 mask = self.decoder.define_mask()
                 logits = np.array(self.llm.get_logits_from_input_ids(tensor))
@@ -102,11 +112,14 @@ class CallMeMaybe:
                 result += tk
                 tensor += (self.llm.encode(tk)[0].tolist())
                 print(tk, end="", flush=True)
+
                 if self.decoder.ended:
                     tensor += self.llm.encode(",")[0].tolist()
                     break
+
                 max -= 1
                 self.decoder.decoder.prev = tk
+
             params[arg] = self.transform_type(types, result)
             print()
         print()
@@ -115,12 +128,16 @@ class CallMeMaybe:
     def function_getter(self, name: str,
                         functions: list[dict[str,
                                              Any]]) -> dict[str, Any] | None:
+        """Check if function is in the list and function
+        and return it if it is"""
         for func in functions:
             if func["name"] == name:
                 return func
         return None
 
     def thinker(self) -> list[dict[str, Any]]:
+        """Pipeline of generation names functions
+        and parameters for all prompts given"""
         lst_results: list[dict[str, Any]] = []
         lst_prompts = define_name_prompt(self.prompts, self.functions)
         func_mask = get_name_mask(self.llm, self.functions)

@@ -5,6 +5,7 @@ from typing import Any
 
 
 class FunctionValidator(BaseModel):
+    """Validate functions format"""
     name: str = Field(min_length=1)
     description: str
     parameters: dict[str, dict[str, str]]
@@ -35,11 +36,13 @@ class FunctionValidator(BaseModel):
 
 
 class Prompt(BaseModel):
+    """Validate prompts format"""
     prompt: str = Field(min_length=1)
 
 
 def data_validator(lst_prompts: list[dict[Any, Any]],
                    lst_funcs: list[dict[Any, Any]]) -> None:
+    """Send functions and prompts into the validator"""
     for prompt in lst_prompts:
         Prompt(**prompt)
     for func in lst_funcs:

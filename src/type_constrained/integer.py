@@ -2,6 +2,7 @@ from .Decoding import Decoding
 
 
 class IntegerDecoding(Decoding):
+    """Manage constrained decoding of integer"""
     def __init__(self) -> None:
         self.stop = {",", "}", ""}
         self.number = [f"{i}" for i in range(10)]

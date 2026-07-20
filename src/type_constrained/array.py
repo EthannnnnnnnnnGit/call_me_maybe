@@ -2,6 +2,7 @@ from .Decoding import Decoding
 
 
 class ArrayDecoding(Decoding):
+    """Manage constrained decoding for arrays"""
     def __init__(self) -> None:
         self.stop = {"]"}
 

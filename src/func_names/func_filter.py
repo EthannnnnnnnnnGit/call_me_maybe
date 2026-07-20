@@ -3,6 +3,7 @@ from typing import Any
 
 def define_name_prompt(prompts: list[dict[str, str]],
                        functions: list[dict[str, Any]]) -> list[str]:
+    """Build all prompts to get the functions's names"""
     lst_prompts: list[str] = []
     prompts_function: str = ""
     for func in functions:

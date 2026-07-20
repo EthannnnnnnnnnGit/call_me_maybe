@@ -2,6 +2,7 @@ from .Decoding import Decoding
 
 
 class HexDecoding(Decoding):
+    """Manage constrained decoding of hexadecimal format"""
     def __init__(self) -> None:
         self.stop = {",", "}", ""}
 

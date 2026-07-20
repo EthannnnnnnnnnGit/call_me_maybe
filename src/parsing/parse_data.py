@@ -3,6 +3,7 @@ from typing import Any
 
 
 def raise_on_dupplicate_keys(json_values: list[tuple[Any, Any]]) -> Any:
+    """Catch dupplicate keys on json.load"""
     temp = {}
     for key, val in json_values:
         if key in temp:
@@ -12,6 +13,7 @@ def raise_on_dupplicate_keys(json_values: list[tuple[Any, Any]]) -> Any:
 
 
 def get_json(filename: str) -> list[dict[str, Any]]:
+    """Get values from json files"""
     with open(filename, "r") as f:
         json_data = json.load(f, object_pairs_hook=raise_on_dupplicate_keys)
         if not isinstance(json_data, list):

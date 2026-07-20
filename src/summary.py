@@ -4,6 +4,7 @@ from typing import Any
 
 
 def summary_print(lst_jsons: list[dict[str, Any]]) -> None:
+    """Build beautiful summary in table format"""
     console = Console()
     table = Table(title="Summary")
 
